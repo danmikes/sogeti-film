@@ -1,0 +1,249 @@
+{
+	"info": {
+		"_postman_id": "990925db-d66a-486d-9cb3-9c22021aefa9",
+		"name": "sogeti",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"user1@mail.io\",\n    \"password\": \"pass1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "allUsers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/user/id/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						"id",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userByEmail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/user/email/user1@mail.io",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						"email",
+						"user1@mail.io"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "subscribeCategory",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"user1@mail.io\",\n    \"availableCategory\": \"International Films\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/user/subscribe",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						"subscribe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shareCategory",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"user1@mail.io\",\n    \"customer\": \"user2@mail.io\",\n    \"availableCategory\": \"International Films\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/user/share",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						"share"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "allCategories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/categories",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "categoryById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/category/id/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"category",
+						"id",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "categoryByName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/category/name/International%20Films",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"category",
+						"name",
+						"International%20Films"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "allCategoriesByEmail",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/categories/email/user1@mail.io",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"categories",
+						"email",
+						"user1@mail.io"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "subscribedCategoriesByEmail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/categories/subscribed/user1@mail.io",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"categories",
+						"subscribed",
+						"user1@mail.io"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
