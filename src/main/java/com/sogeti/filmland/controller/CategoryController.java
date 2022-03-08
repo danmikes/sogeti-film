@@ -1,7 +1,6 @@
 package com.sogeti.filmland.controller;
 
 import com.sogeti.filmland.entity.Category;
-import com.sogeti.filmland.entity.Subscribe;
 import com.sogeti.filmland.model.CategoryWrapper;
 import com.sogeti.filmland.repository.CategoryRepository;
 import com.sogeti.filmland.repository.UserRepository;
@@ -13,11 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.ResourceAccessException;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Validated
 @RestController
 @RequestMapping
 public class CategoryController {
@@ -39,21 +37,23 @@ public class CategoryController {
   }
 
   @GetMapping("category/id/{id}")
-  public ResponseEntity<Category> getCategoryById(@Valid @PathVariable("id") long id) {
+  public ResponseEntity<Category> getCategoryById(@PathVariable("id") long id) {
     Category category = categoryRepository.findById(id)
       .orElseThrow(() -> new ResourceAccessException("Not found Category with id = " + id));
     return new ResponseEntity<>(category, HttpStatus.OK);
   }
 
   @GetMapping("category/name/{name}")
-  public ResponseEntity<Category> getCategoryByName(@Valid @PathVariable("name") String name) {
+  @Pattern(regexp = "/^[a-zA-Z0-9]+([_ -]?[a-zA-Z0-9])*$/")
+  public ResponseEntity<Category> getCategoryByName(@PathVariable("name") String name) {
     Category category = categoryRepository.findByName(name)
-      .orElseThrow(() -> new ResourceAccessException("Not found Category with id = " + name));
+      .orElseThrow(() -> new RuntimeException("Not found Category with id = " + name));
     return new ResponseEntity<>(category, HttpStatus.OK);
   }
 
   @GetMapping("categories/email/{email}")
-  public ResponseEntity<CategoryWrapper> getCategoriesByUserMail(@Valid @PathVariable("email") String email) {
+  @Pattern(regexp = "^(.+)@(.+)$")
+  public ResponseEntity<CategoryWrapper> getCategoriesByUserMail(@PathVariable("email") String email) {
     long userId = userRepository.findByEmail(email).get().getId();
     CategoryWrapper categoryWrapper = new CategoryWrapper();
     List<Category> allCategories = categoryRepository.findAll();
@@ -66,13 +66,12 @@ public class CategoryController {
     categoryWrapper.setAvailableCategories(availableCategories);
     categoryWrapper.setSubscribedCategories(subscribedCategories);
 
-    System.out.println(categoryWrapper);
-
     return new ResponseEntity<>(categoryWrapper, HttpStatus.OK);
   }
 
   @GetMapping("categories/subscribed/{email}")
-  public ResponseEntity<List<Category>> getSubscribedCategoriesByUserMail(@Valid @PathVariable("email") String email) {
+  @Pattern(regexp = "^(.+)@(.+)$")
+  public ResponseEntity<List<Category>> getSubscribedCategoriesByUserMail(@PathVariable("email") String email) {
     long userId = userRepository.findByEmail(email).get().getId();
     List<Category> categories = categoryRepository.findCategoriesByUsersId(userId);
     if (categories.isEmpty()) {

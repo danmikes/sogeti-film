@@ -20,7 +20,6 @@ public class User {
   private long id;
 
   @Column(nullable = false)
-  @Pattern(regexp = "^(.+)@(.+)$")
   private String email;
 
   @Column(nullable = false)

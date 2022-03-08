@@ -2,7 +2,7 @@ package com.sogeti.filmland.controller;
 
 import com.sogeti.filmland.entity.Category;
 import com.sogeti.filmland.entity.Share;
-import com.sogeti.filmland.entity.Subscribe;
+import com.sogeti.filmland.entity.Subscription;
 import com.sogeti.filmland.entity.User;
 import com.sogeti.filmland.repository.CategoryRepository;
 import com.sogeti.filmland.repository.UserRepository;
@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.ResourceAccessException;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Validated
 @RestController
@@ -39,30 +43,30 @@ public class UserController {
   }
 
   @GetMapping("user/id/{id}")
-  public ResponseEntity<User> getUserById(@Valid @PathVariable("id") long id) {
+  public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
     User user = userRepository.findById(id)
       .orElseThrow(() -> new ResourceAccessException("Not found User with id = " + id));
     return new ResponseEntity<>(user, HttpStatus.OK);
   }
 
   @GetMapping("user/email/{email}")
-  public ResponseEntity<User> getUserByEmail(@Valid @PathVariable("email") String email) {
+  @Pattern(regexp = "^(.+)@(.+)$")
+  public ResponseEntity<User> getUserByEmail(@PathVariable("email") String email) {
     User user = userRepository.findByEmail(email)
       .orElseThrow(() -> new ResourceAccessException("Not found User with id = " + email));
     return new ResponseEntity<>(user, HttpStatus.OK);
   }
 
   @PostMapping("user/subscribe")
-  public ResponseEntity<Category> subscribeCategory(@Valid @RequestBody Subscribe subscribe) {
-    String email = subscribe.getEmail();
-    String availableCategory = subscribe.getAvailableCategory();
+  public ResponseEntity<Category> subscribeCategory(@RequestBody Subscription subscription) {
+    String email = subscription.getEmail();
+    String availableCategory = subscription.getAvailableCategory();
 
     Category category = userRepository.findByEmail(email).map(user -> {
 
       if (availableCategory != null) {
         Category _category = categoryRepository.findByName(availableCategory)
           .orElseThrow(() -> new ResourceAccessException("Not found Category with name = " + availableCategory));
-        // TODO : SubscribedCategoryMapper
         _category.setStartDate(LocalDate.now());
         user.addCategory(_category);
         userRepository.save(user);
@@ -74,7 +78,7 @@ public class UserController {
   }
 
   @PostMapping("user/share")
-  public ResponseEntity<Category> shareCategory(@Valid @RequestBody Share share) {
+  public ResponseEntity<Category> shareCategory(@RequestBody Share share) {
     String email = share.getEmail();
     String customer = share.getEmail();
     String availableCategory = share.getAvailableCategory();
@@ -82,16 +86,15 @@ public class UserController {
     Category _category = categoryRepository.findByName(availableCategory)
       .orElseThrow(() -> new ResourceAccessException("Not found Category with name = " + availableCategory));
 
-    Subscribe subscribeEmail = new Subscribe();
-    subscribeEmail.setEmail(email);
-    // TODO : AvailableCategoryMapper
-    subscribeEmail.setAvailableCategory(availableCategory);
-    subscribeCategory(subscribeEmail);
+    Subscription subscriptionEmail = new Subscription();
+    subscriptionEmail.setEmail(email);
+    subscriptionEmail.setAvailableCategory(availableCategory);
+    subscribeCategory(subscriptionEmail);
 
-    Subscribe subscribeCustomer = new Subscribe();
-    subscribeCustomer.setEmail(customer);
-    subscribeCustomer.setAvailableCategory(availableCategory);
-    subscribeCategory(subscribeCustomer);
+    Subscription subscriptionCustomer = new Subscription();
+    subscriptionCustomer.setEmail(customer);
+    subscriptionCustomer.setAvailableCategory(availableCategory);
+    subscribeCategory(subscriptionCustomer);
 
     return new ResponseEntity<>(_category, HttpStatus.OK);
   }

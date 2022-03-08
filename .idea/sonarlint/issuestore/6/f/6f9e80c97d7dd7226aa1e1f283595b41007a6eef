@@ -1,3 +1,5 @@
 
+c
+java:S1128"ARemove this unused import 'javax.validation.constraints.Pattern'.(¶ò†€øÿÿÿÿ8‰­±Îö/
 a
-java:S22592"FA "NullPointerException" could be thrown; "category" is nullable here.(çöÇòÿÿÿÿÿ
+java:S22591"FA "NullPointerException" could be thrown; "category" is nullable here.(çöÇòÿÿÿÿÿ
