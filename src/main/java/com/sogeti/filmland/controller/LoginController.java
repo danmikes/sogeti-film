@@ -19,8 +19,11 @@ import javax.validation.Valid;
 @RequestMapping("")
 public class LoginController {
 
-  @Autowired
   private UserRepository userRepository;
+
+  public LoginController(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
   @PostMapping("login")
   public ResponseEntity<Response> loginUser(@Valid @RequestBody User user) {

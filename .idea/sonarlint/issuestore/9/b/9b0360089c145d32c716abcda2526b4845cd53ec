@@ -1,8 +1,0 @@
-
-b
-java:S4684"@Replace this persistent entity with a simple POJO or DTO object.(Æûëÿÿÿÿÿ8ÊÈÅËö/
-a
-java:S1192"FDefine a constant instead of duplicating this literal "User " 3 times.(Ë”î·ùÿÿÿÿ
-f	java:S117#"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ØŒ¨á
-m
-java:S3655#"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(ØŒ¨á8êĞÅËö/
