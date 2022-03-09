@@ -1,6 +1,7 @@
 package com.sogeti.filmland.controller;
 
 import com.sogeti.filmland.entity.Category;
+import com.sogeti.filmland.entity.User;
 import com.sogeti.filmland.model.CategoryWrapper;
 import com.sogeti.filmland.repository.CategoryRepository;
 import com.sogeti.filmland.repository.UserRepository;
@@ -52,13 +53,14 @@ public class CategoryController {
   @GetMapping("categories/email/{email}")
   @Pattern(regexp = "^(.+)@(.+)$")
   public ResponseEntity<CategoryWrapper> getCategoriesByUserMail(@PathVariable("email") String email) {
-    long userId = userRepository.findByEmail(email).get().getId();
+    long userId = userRepository.findByEmail(email)
+      .map(User::getId)
+      .orElseThrow();
     CategoryWrapper categoryWrapper = new CategoryWrapper();
     List<Category> allCategories = categoryRepository.findAll();
     List<Category> subscribedCategories = categoryRepository.findCategoriesByUsersId(userId);
-    List<Category> availableCategories = allCategories
-      .stream()
-      .filter(category -> allCategories.contains(category))
+    List<Category> availableCategories = allCategories.stream()
+      .filter(allCategories::contains)
       .collect(Collectors.toList());
 
     categoryWrapper.setAvailableCategories(availableCategories);
@@ -70,7 +72,9 @@ public class CategoryController {
   @GetMapping("categories/subscribed/{email}")
   @Pattern(regexp = "^(.+)@(.+)$")
   public ResponseEntity<List<Category>> getSubscribedCategoriesByUserMail(@PathVariable("email") String email) {
-    long userId = userRepository.findByEmail(email).get().getId();
+    long userId = userRepository.findByEmail(email)
+      .map(User::getId)
+      .orElseThrow();
     List<Category> categories = categoryRepository.findCategoriesByUsersId(userId);
     return ResponseEntity.ok(categories);
   }

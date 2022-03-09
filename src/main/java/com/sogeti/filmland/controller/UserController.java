@@ -58,12 +58,9 @@ public class UserController {
 
   @PostMapping("user/subscribe")
   public ResponseEntity<Category> subscribeCategory(@RequestBody Subscription subscription) {
-    String email = subscription.getEmail();
-    String availableCategory = subscription.getAvailableCategory();
-
-    Category category = userRepository.findByEmail(email).map(user -> {
-      if (availableCategory != null) {
-        Category _category = categoryRepository.findByName(availableCategory)
+    Category category = userRepository.findByEmail(subscription.getEmail()).map(user -> {
+      if (subscription.getAvailableCategory() != null) {
+        Category _category = categoryRepository.findByName(subscription.getAvailableCategory())
           .orElseThrow();
         _category.setStartDate(LocalDate.now());
         user.addCategory(_category);
@@ -77,23 +74,12 @@ public class UserController {
 
   @PostMapping("user/share")
   public ResponseEntity<Category> shareCategory(@RequestBody Share share) {
-    String email = share.getEmail();
-    String customer = share.getCustomer();
-    String availableCategory = share.getAvailableCategory();
-
-    Category _category = categoryRepository.findByName(availableCategory)
-      .orElseThrow();
-
-    subscribeCategory(Subscription.builder()
-      .email(email)
-      .availableCategory(availableCategory)
-      .build());
-
-    subscribeCategory(Subscription.builder()
-      .email(customer)
-      .availableCategory(availableCategory)
-      .build());
-
-    return new ResponseEntity<>(_category, HttpStatus.OK);
+    return categoryRepository.findByName(share.getAvailableCategory())
+      .map(availableCategory ->
+        subscribeCategory(Subscription.builder()
+        .email(share.getEmail())
+        .email(share.getCustomer())
+        .availableCategory(share.getAvailableCategory())
+        .build())).orElseThrow();
   }
 }

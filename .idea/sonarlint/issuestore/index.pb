@@ -13,5 +13,11 @@ o
 ?src/test/java/com/sogeti/filmland/FilmlandApplicationTests.java,5/6/568677da35ca7a66f8ceb05a9b8e560e0d9f8c99
 7
 pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
-b
-2src/main/java/com/sogeti/filmland/entity/User.java,6/f/6f9e80c97d7dd7226aa1e1f283595b41007a6eef
+q
+Asrc/main/java/com/sogeti/filmland/controller/LoginController.java,9/b/9b0360089c145d32c716abcda2526b4845cd53ec
+f
+6src/main/java/com/sogeti/filmland/entity/Category.java,f/f/ff1c41570f8818e4c1d70c845e39e5a605aa1148
+t
+Dsrc/main/java/com/sogeti/filmland/repository/CategoryRepository.java,d/5/d56f0216f5af0da0c584b5513071a149a4e991e6
+o
+?src/main/java/com/sogeti/filmland/model/SubscribedCategory.java,e/3/e35d869811518cd4df108fa6b376e0a77725a9b4
